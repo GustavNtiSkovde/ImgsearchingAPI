@@ -5,10 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Base Layout</title>
   <link rel="stylesheet" href="style.css" />
-  <script mode="module" src="js/api.js" defer ></script>
-  <script src="js/ux.js" defer ></script>
-  <script src="js/ui.js" defer ></script>
-  <script src="js/api.js" defer ></script>
 </head>
 <body>
 
@@ -35,7 +31,7 @@
         
         <!--Placeholder-->
         <div class="card-item">
-          <div class="picture-box"><div class="gallery" id="gallery"></div></div>
+          <div class="picture-box">Picture Placeholder</div>
           <div class="hover-dropdown-wrapper">
             <div class="hover-dropdown">
               <div>Tags: <span class="card-tags">Tag1, Tag2</span></div>
@@ -53,5 +49,9 @@
       <div class="map-placeholder">MAP</div>
     </aside>
   </main>
+
+  <script src="js/ux.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/api.js"></script>
 </body>
 </html>
