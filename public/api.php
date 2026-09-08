@@ -5,7 +5,7 @@ require_once __DIR__ . '/../loadenv.php';
 loadEnv(__DIR__ . '/../.env');
 
 $apiKey = $_ENV['API_KEY'] ?? '';
-$query = urlencode($_GET['q'] ?? 'flower');
+$query = urlencode($_GET['q'] ?? '');
 
 $url = "https://pixabay.com/api/?key={$apiKey}&q={$query}&image_type=photo";
 
