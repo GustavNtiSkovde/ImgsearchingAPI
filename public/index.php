@@ -38,6 +38,5 @@
       <div class="map-placeholder">MAP</div>
     </aside>
   </main>
-
 </body>
 </html>
