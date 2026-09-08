@@ -77,6 +77,13 @@ body {
   cursor: pointer;
 }
 
+.picture-box-img {
+  height: 180px;
+  width: 240px;
+  object-fit: contain;
+  display: block;
+}
+
 .hover-dropdown-wrapper {
   display: none;
   position: absolute;

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Base Layout</title>
   <link rel="stylesheet" href="style.css" />
+  <script type="module" src="js/api.js" defer ></script>
+  <script src="js/ux.js" defer ></script>
+  <script src="js/ui.js" defer ></script>
 </head>
 <body>
 
@@ -27,21 +30,7 @@
   <main class="main-content">
     <section class="image-grid-section">
       <!-- ID for inserting image cards -->
-      <div class="grid-container" id="imageGrid">
-        
-        <!--Placeholder-->
-        <div class="card-item">
-          <div class="picture-box">Picture Placeholder</div>
-          <div class="hover-dropdown-wrapper">
-            <div class="hover-dropdown">
-              <div>Tags: <span class="card-tags">Tag1, Tag2</span></div>
-              <div>Views: <span class="card-views">0</span></div>
-              <div>Resolution: <span class="card-res">0x0</span></div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <div class="grid-container" id="imageGrid"></div>
     </section>
 
     <aside class="map-section" id="mapSection">
