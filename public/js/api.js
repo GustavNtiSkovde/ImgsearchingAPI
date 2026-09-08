@@ -1,6 +1,6 @@
-const input = document.querySelector('#searchInput');
-const button = document.querySelector('#searchBtn');
-const gallery = document.querySelector('#gallery');
+const input = document.getElementById('searchInput');
+const button = document.getElementById('searchSubmit');
+const gallery = document.getElementById('gallery');
 
 button.addEventListener('click', async () => {
     const search = encodeURIComponent(input.value.trim() || 'flower');
