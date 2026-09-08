@@ -2,28 +2,23 @@
 let searchTerm = '';
 
 const input = document.getElementById('searchInput');
-const button = document.getElementById('searchSubmit');
+const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
 
-
-async function performSearch(){
+async function performSearch() {
     const search = encodeURIComponent(input.value.trim() || 'flower');
-
-    if (search === '') {
-        return;
-    }
 
     try {
         const response = await fetch(`/api.php?q=${search}`);
         const data = await response.json();
-        
+
         if (!response.ok || data.error) {
             throw new Error(data.error || 'Request failed');
         }
 
         imageGrid.innerHTML = data.hits.map(image => `
             <div class="card-item">
-                <div class="picture-box"> 
+                <div class="picture-box">
                     <img class="picture-box-img" src="${image.webformatURL}" alt="${image.tags}">
                 </div>
 
@@ -39,14 +34,10 @@ async function performSearch(){
     } catch (error) {
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
+}
 
-};
-
-input.addEventListener('keydown', (e) =>{
-    if (e.key === "Enter") {
-        performSearch();
-    }
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    performSearch();
 });
-
-button.addEventListener('click', performSearch);
 
