@@ -38,9 +38,5 @@
       <div class="map-placeholder">MAP</div>
     </aside>
   </main>
-
-  <script src="js/ux.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/api.js"></script>
 </body>
 </html>
