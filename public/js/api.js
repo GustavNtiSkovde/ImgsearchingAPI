@@ -1,14 +1,22 @@
+
+let searchTerm = '';
+
 const input = document.getElementById('searchInput');
 const button = document.getElementById('searchSubmit');
 const imageGrid = document.getElementById('imageGrid');
 
-button.addEventListener('click', async () => {
+
+async function performSearch(){
     const search = encodeURIComponent(input.value.trim() || 'flower');
+
+    if (search === '') {
+        return;
+    }
 
     try {
         const response = await fetch(`/api.php?q=${search}`);
         const data = await response.json();
-
+        
         if (!response.ok || data.error) {
             throw new Error(data.error || 'Request failed');
         }
@@ -31,4 +39,14 @@ button.addEventListener('click', async () => {
     } catch (error) {
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
+
+};
+
+input.addEventListener('keydown', (e) =>{
+    if (e.key === "Enter") {
+        performSearch();
+    }
 });
+
+button.addEventListener('click', performSearch);
+
