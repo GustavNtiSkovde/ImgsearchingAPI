@@ -6,4 +6,9 @@ document.addEventListener('DOMContentLoaded', function () { //Added listner for 
         maxZoom: 15, //Max zoom in 
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+
+    map.on('click', async function(e) {
+        var coords = e.latlng;
+        console.log(coords);
+    });
 });
