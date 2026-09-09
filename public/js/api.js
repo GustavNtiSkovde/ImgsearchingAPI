@@ -6,11 +6,20 @@ const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
 
 async function performSearch() {
-    const search = encodeURIComponent(input.value.trim() || 'flower');
+    const search = input.value.trim() || 'flower';
 
     try {
-        const response = await fetch(`/api.php?q=${search}`);
-        const data = await response.json();
+        const apiUrl = new URL('../api.php', import.meta.url);
+        apiUrl.searchParams.set('q', search);
+        const response = await fetch(apiUrl);
+        const responseText = await response.text();
+        let data;
+
+        try {
+            data = JSON.parse(responseText);
+        } catch {
+            throw new Error(`Server returned invalid JSON (${response.status})`);
+        }
 
         if (!response.ok || data.error) {
             throw new Error(data.error || 'Request failed');
@@ -34,6 +43,11 @@ async function performSearch() {
     } catch (error) {
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
+}
+
+
+button.addEventListener('click', async () => {
+    performSearch();
 }
 
 form.addEventListener('submit', (event) => {
