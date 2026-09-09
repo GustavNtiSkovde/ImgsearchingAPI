@@ -1,8 +1,11 @@
+
+let searchTerm = '';
+
 const input = document.getElementById('searchInput');
-const button = document.getElementById('searchSubmit');
+const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
 
-button.addEventListener('click', async () => {
+async function performSearch() {
     const search = input.value.trim() || 'flower';
 
     try {
@@ -24,7 +27,7 @@ button.addEventListener('click', async () => {
 
         imageGrid.innerHTML = data.hits.map(image => `
             <div class="card-item">
-                <div class="picture-box"> 
+                <div class="picture-box">
                     <img class="picture-box-img" src="${image.webformatURL}" alt="${image.tags}">
                 </div>
 
@@ -40,4 +43,15 @@ button.addEventListener('click', async () => {
     } catch (error) {
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
+}
+
+
+button.addEventListener('click', async () => {
+    performSearch();
+}
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    performSearch();
 });
+
