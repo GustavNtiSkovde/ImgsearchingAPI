@@ -1,25 +1,14 @@
 
-let searchTerm = '';
-
 const input = document.getElementById('searchInput');
 const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
 
 async function performSearch() {
-    const search = input.value.trim() || 'flower';
+    const search = encodeURIComponent(input.value.trim() || 'flower');
 
     try {
-        const apiUrl = new URL('../api.php', import.meta.url);
-        apiUrl.searchParams.set('q', search);
-        const response = await fetch(apiUrl);
-        const responseText = await response.text();
-        let data;
-
-        try {
-            data = JSON.parse(responseText);
-        } catch {
-            throw new Error(`Server returned invalid JSON (${response.status})`);
-        }
+        const response = await fetch(`/api.php?q=${search}`);
+        const data = await response.json();
 
         if (!response.ok || data.error) {
             throw new Error(data.error || 'Request failed');
@@ -45,13 +34,13 @@ async function performSearch() {
     }
 }
 
-
-button.addEventListener('click', async () => {
-    performSearch();
-}
-
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     performSearch();
 });
+
+input.addEventListener('input', () => {
+    input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, '');
+});
+
 
