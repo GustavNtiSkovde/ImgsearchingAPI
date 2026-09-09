@@ -110,6 +110,7 @@ body {
 
 .map-section {
   width: 260px;
+  min-height: 320px;
   border: 1px solid #ccc;
   border-radius: 12px;
   padding: 12px;
@@ -126,10 +127,8 @@ body {
   cursor: pointer;
 }
 
-.map-placeholder {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
+#map {
+  height: 100%;
+  width: 100%;
+  min-height: 260px;
 }

@@ -1,3 +1,4 @@
+//Searching using unsplash api call, this part sending in the input data into api.php where it calls the api with responding input and then returns JSON data that the js adds onto the html 
 const input = document.getElementById('searchInput');
 const button = document.getElementById('searchSubmit');
 const imageGrid = document.getElementById('imageGrid');
