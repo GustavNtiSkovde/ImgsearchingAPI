@@ -49,7 +49,7 @@ async function performSearch() {
 
 button.addEventListener('click', async () => {
     performSearch();
-}
+});
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
