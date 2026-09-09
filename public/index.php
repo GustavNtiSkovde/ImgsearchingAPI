@@ -14,10 +14,10 @@
 <body>
 
   <header class="top-bar">
-    <div class="search-wrapper">
+    <form id="searchForm" class="search-wrapper">
       <input type="text" id="searchInput" class="search-input" placeholder="Search..." />
-      <button type="button" id="searchSubmit" class="enter-btn">↵</button>
-    </div>
+      <button type="submit" id="searchSubmit" class="enter-btn">↵</button>
+    </form>
 
     <div class="filter-wrapper">
       <select id="imageTypeFilter" class="filter-select">
