@@ -1,4 +1,5 @@
 const input = document.getElementById('searchInput');
+const button = document.getElementById('searchSubmit');
 const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
 
@@ -22,8 +23,8 @@ async function performSearch() {
                 <div class="hover-dropdown-wrapper">
                     <div class="hover-dropdown">
                         <div>Tags: <span class="card-tags"></span> ${image.tags}</div>
-                        <div>Views: <span class="card-views">0</span> ${image.views}</div>
-                        <div>Resolution: <span class="card-res">0x0</span> ${image.imageWidth}x${image.imageHeight}</div>
+                        <div>Location:</span> ${image.location}</div>
+                        <div>Resolution:${image.imageWidth}x${image.imageHeight}</div>
                     </div>
                 </div>
             </div>
@@ -32,6 +33,11 @@ async function performSearch() {
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
 }
+
+
+button.addEventListener('click', async () => {
+    performSearch();
+});
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();

@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Image Gallery</title>
+  <title>Base Layout</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <link rel="stylesheet" href="style.css" />
-<script src="js/api.js" defer></script>
-<script src="js/ui.js" defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script type="module" src="js/api.js" defer ></script>
+  <script src="js/ux.js" defer ></script>
+  <script src="js/ui.js" defer ></script>
 </head>
 <body>
 
@@ -83,7 +86,9 @@
     <div class="split-divider" id="mapResizeHandle"></div>
 
     <aside class="map-section" id="mapSection">
-      <div class="map-placeholder">MAP</div>
+      <button type="button" id="extendToggle" class="extend-btn">Toggle Map</button>
+      <div id="map"></div>
+      <script src="js/leafletmap.js"></script> <!-- Script file has to come after the css, link to js and the div element -->
     </aside>
   </main>
 

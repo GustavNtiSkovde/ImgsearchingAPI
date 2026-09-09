@@ -257,6 +257,14 @@ body.is-resizing .split-divider::after {
   padding: 14px;
   box-shadow: 0 6px 16px rgba(31, 36, 33, 0.12);
   font-size: 13px;
+}
+
+.map-section {
+  width: 260px;
+  min-height: 320px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 12px;
   line-height: 1.4;
   display: flex;
   flex-direction: column;
@@ -264,6 +272,20 @@ body.is-resizing .split-divider::after {
   color: var(--text-secondary);
 }
 
+.map-section.extended {
+  width: 450px;
+}
+
+.extend-btn {
+  padding: 6px;
+  cursor: pointer;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+  min-height: 260px;
+}
 .hover-dropdown span {
   color: var(--text-primary);
   font-weight: 500;
