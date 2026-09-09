@@ -285,7 +285,7 @@ body.is-resizing .split-divider::after {
   height: 100%;
   width: 100%;
   min-height: 260px;
-  
+}
 .hover-dropdown span {
   color: var(--text-primary);
   font-weight: 500;
