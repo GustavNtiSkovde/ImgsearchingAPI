@@ -1,4 +1,3 @@
-
 const input = document.getElementById('searchInput');
 const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
