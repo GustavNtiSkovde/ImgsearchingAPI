@@ -1,10 +1,10 @@
 <?php
-// filepath: /home/gustavjakobsson/ImgsearchingAPI/public/api.php
+// filepath: /home/gustavjakobsson/ImgsearchingAPI/api.php
 
 header('Content-Type: application/json; charset=utf-8');
 
-require_once dirname(__DIR__) . '/loadenv.php';
-loadEnv(__DIR__ . '.env');
+require_once __DIR__ . '/loadenv.php';
+loadEnv(__DIR__ . '/.env');
 
 $accessKey = $_ENV['API_KEY'] ?? getenv('API_KEY') ?: '';
 $query = trim($_GET['q'] ?? '');
@@ -87,7 +87,6 @@ foreach ($unsplashData['results'] ?? [] as $image) {
     if (empty($tags) || empty($location)) {
         continue;
     }
-
     $processedHits[] = [
         'webformatURL' => $image['urls']['regular'] ?? $image['urls']['small'] ?? '',
         'tags'         => implode(', ', $tags),
