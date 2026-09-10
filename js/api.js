@@ -6,7 +6,7 @@ const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
 
 async function performSearch() {
-    const search = encodeURIComponent(input.value.trim() || 'flower');
+    const search = encodeURIComponent(input.value.trim() || null);
 
     try {
         const apiUrl = new URL('../api.php', import.meta.url);
