@@ -3,8 +3,8 @@
 
 header('Content-Type: application/json; charset=utf-8');
 
-require_once __DIR__ . './loadenv.php';
-loadEnv(__DIR__ . './.env');
+require_once dirname(__DIR__) . '/loadenv.php';
+loadEnv(__DIR__ . '.env');
 
 $accessKey = $_ENV['API_KEY'] ?? getenv('API_KEY') ?: '';
 $query = trim($_GET['q'] ?? '');

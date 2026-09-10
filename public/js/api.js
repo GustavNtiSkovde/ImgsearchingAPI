@@ -9,7 +9,7 @@ async function performSearch() {
     const search = encodeURIComponent(input.value.trim() || 'flower');
 
     try {
-        const response = await fetch(`./public/api.php?q=${search}`);
+        const response = await fetch(`/public/api.php?q=${search}`);
         const data = await response.json();
 
         if (!response.ok || data.error) {
