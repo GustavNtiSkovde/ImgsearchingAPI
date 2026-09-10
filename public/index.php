@@ -6,16 +6,20 @@
   <title>Base Layout</title>
 <link rel="icon" type="image/svg+xml" href="js/icon.svg" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="./style.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script type="module" src="js/api.js" defer></script>
-  <script src="js/ux.js" defer></script>
-  <script src="js/ui.js" defer></script>
+  <script type="module" src="./js/api.js" defer ></script>
+  <script src="./js/ux.js" defer ></script>
+  <script src="./js/ui.js" defer ></script>
 </head>
 <body>
   <header class="top-bar">
     <form id="searchForm" class="search-wrapper">
+    <form id="searchForm" class="search-wrapper">
       <input type="text" id="searchInput" class="search-input" placeholder="Search..." />
+      <button type="submit" id="searchSubmit" class="enter-btn">↵</button>
+    </form>
+
       <button type="submit" id="searchSubmit" class="enter-btn">↵</button>
     </form>
     <div class="filter-wrapper">
@@ -110,7 +114,7 @@
         <button class="close-map-btn" id="closeMapBtn">&times;</button>
       </div>
       <div id="map"></div>
-      <script src="js/leafletmap.js"></script>
+      <script src="./js/leafletmap.js"></script> <!-- Script file has to come after the css, link to js and the div element -->
     </aside>
   </main>
 </body>
