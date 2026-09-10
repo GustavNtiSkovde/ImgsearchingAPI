@@ -15,7 +15,11 @@
 <body>
   <header class="top-bar">
     <form id="searchForm" class="search-wrapper">
+    <form id="searchForm" class="search-wrapper">
       <input type="text" id="searchInput" class="search-input" placeholder="Search..." />
+      <button type="submit" id="searchSubmit" class="enter-btn">↵</button>
+    </form>
+
       <button type="submit" id="searchSubmit" class="enter-btn">↵</button>
     </form>
     <div class="filter-wrapper">
