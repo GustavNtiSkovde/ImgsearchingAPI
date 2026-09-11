@@ -44,11 +44,11 @@ function getLocationFromCoordinates(float $lat, float $lng): array { //Use float
 
     // 5. Extract city name with fallback logic for smaller towns/villages
     $city = $address['city'] 
-         ?? $address['town'] 
-         ?? $address['village'] 
-         ?? $address['municipality'] 
-         ?? $address['county'] 
-         ?? null;
+        ?? $address['town'] 
+        ?? $address['village'] 
+        ?? $address['municipality'] 
+        ?? $address['county'] 
+        ?? null;
 
     $country = $address['country'] ?? null;
 

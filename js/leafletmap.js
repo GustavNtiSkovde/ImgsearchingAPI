@@ -9,14 +9,27 @@ document.addEventListener('DOMContentLoaded', function () { //Added listner for 
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+    //Variable for map pin icon
+    let currentMarker = null;
+
     map.on('click', async function(e) {
-        let coords = e.latlng;
+        let coords = e.latlng; 
         console.log(coords);
 
-          try {
+        if (currentMarker) {
+            currentMarker.remove();
+        }
+        currentMarker = L.marker([coords.lat, coords.lng]).addTo(map);
+
+        try {
             let response = await fetch(`../nominatimapi.php?lat=${coords.lat}&lng=${coords.lng}`);
             let data = await response.json();
             console.log("Location details:", data.country, data.city);
+            
+            //Show city and country on the marker
+            if (data.city ?? data.country) {
+                currentMarker.bindPopup(`<b>${data.city}</b>, ${data.country}`).openPopup();
+            }
         }
         catch (error) {
                 console.error("Error fetching location", error);
