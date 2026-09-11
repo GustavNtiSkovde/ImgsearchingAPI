@@ -13,6 +13,9 @@ async function fetchTenImages() {
     while (collectedImages.length < 10) {
         // 1. Build URL with search query and current page number
         const apiUrl = new URL('../api.php', import.meta.url);
+        apiUrl.searchParams.set('q', search); //creates / updates the query in an URLs search string 
+        const response = await fetch(apiUrl); // an expression that pauses an async func until server respondes with meta data
+        const data = await response.json(); //Parses an HTTP response into a usable object
         apiUrl.searchParams.set('q', currentQuery);
         apiUrl.searchParams.set('page', currentPage);
 
@@ -27,6 +30,8 @@ async function fetchTenImages() {
             throw new Error(data.error || 'Request failed');
         }
 
+        //"Print" out the html elements per img from hits
+        imageGrid.innerHTML = data.hits.map(image => `
         // 4. If Unsplash has no more images at all, break the loop 
         if (data.hits.length === 0) {
             break;
@@ -64,8 +69,7 @@ async function performSearch() {
                 </div>
             </div>
         `).join('');
-    } catch (error) {
-        // Displays a clear error message if the search fails.
+    } catch (error) { //Error handling if no imgs found or loadble
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
 }
@@ -104,7 +108,5 @@ form.addEventListener('submit', (event) => {
 });
 
 input.addEventListener('input', () => {
-    input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, '');
+    input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, ''); //Symboles to ignore/replace and with what 
 });
-
-
