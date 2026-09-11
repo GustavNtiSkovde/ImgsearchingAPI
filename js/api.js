@@ -1,4 +1,3 @@
-
 let currentPage = 1;
 let currentQuery = '';
 
@@ -10,17 +9,17 @@ const imageGrid = document.getElementById('imageGrid');
 async function fetchTenImages() {
     let collectedImages = [];
 
-    // Fortsätt loopen så länge vi har färre än 10 bilder 📦
+    // Continue the loop as long as we have fewer than 10 images 
     while (collectedImages.length < 10) {
-        // 1. Bygg URL med sökord och nuvarande sidnummer
+        // 1. Build URL with search query and current page number
         const apiUrl = new URL('../api.php', import.meta.url);
         apiUrl.searchParams.set('q', currentQuery);
         apiUrl.searchParams.set('page', currentPage);
 
-        // 2. Höj sidnumret till nästa anrop 📄
+        // 2. Increment the page number for the next request 
         currentPage++;
 
-        // 3. Hämta datan från PHP
+        // 3. Fetch data from PHP
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -28,12 +27,12 @@ async function fetchTenImages() {
             throw new Error(data.error || 'Request failed');
         }
 
-        // 4. Om Unsplash inte har fler bilder alls, bryt loopen 
+        // 4. If Unsplash has no more images at all, break the loop 
         if (data.hits.length === 0) {
             break;
         }
 
-        // 5. Lägg till bilderna (som PHP redan filtrerat) i vår lista 
+        // 5. Add the images (which PHP has already filtered) to our list 
         collectedImages.push(...data.hits);
     }
 
@@ -41,15 +40,15 @@ async function fetchTenImages() {
 }
 
 async function performSearch() {
-    // Hämtar användarens sökterm och säkrar den för att användas i URL-parametern.
+    // Gets the user's search term and encodes it safely for use in the URL parameter.
     const search = encodeURIComponent(input.value.trim() || null);
     currentQuery = search;
-    currentPage = 1; // Återställ sidnumret för en ny sökning
+    currentPage = 1; // Reset page number for a new search
     try {
 
-        //Hämtar minst 10 bildobjekt via vår hjälpfunktion 
+        // Fetches at least 10 image objects via our helper function 
         const images = await fetchTenImages();
-        // Renderar varje hittad bild som ett kort i gridet.
+        // Renders each found image as a card in the grid.
         imageGrid.innerHTML = images.slice(0,10).map(image => `
             <div class="card-item">
                 <div class="picture-box">
@@ -66,7 +65,7 @@ async function performSearch() {
             </div>
         `).join('');
     } catch (error) {
-        // Visar ett tydligt felmeddelande om sökningen misslyckas.
+        // Displays a clear error message if the search fails.
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
 }
@@ -84,5 +83,3 @@ form.addEventListener('submit', (event) => {
 input.addEventListener('input', () => {
     input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, '');
 });
-
-
