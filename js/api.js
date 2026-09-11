@@ -1,16 +1,30 @@
+let currentPage = 1;
+let currentQuery = '';
+
 const input = document.getElementById('searchInput');
 const button = document.getElementById('searchSubmit');
 const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
 
-async function performSearch() {
-    const search = encodeURIComponent(input.value.trim() || null); //EncodeURI func encodes part of the address replacing special characters into UTF-8 escape characters, ?, =, / into %3F or %26
+async function fetchTenImages() {
+    let collectedImages = [];
 
-    try {
+    // Continue the loop as long as we have fewer than 10 images 
+    while (collectedImages.length < 10) {
+        // 1. Build URL with search query and current page number
         const apiUrl = new URL('../api.php', import.meta.url);
         apiUrl.searchParams.set('q', search); //creates / updates the query in an URLs search string 
         const response = await fetch(apiUrl); // an expression that pauses an async func until server respondes with meta data
         const data = await response.json(); //Parses an HTTP response into a usable object
+        apiUrl.searchParams.set('q', currentQuery);
+        apiUrl.searchParams.set('page', currentPage);
+
+        // 2. Increment the page number for the next request 
+        currentPage++;
+
+        // 3. Fetch data from PHP
+        const response = await fetch(apiUrl);
+        const data = await response.json();
 
         if (!response.ok || data.error) {
             throw new Error(data.error || 'Request failed');
@@ -18,6 +32,29 @@ async function performSearch() {
 
         //"Print" out the html elements per img from hits
         imageGrid.innerHTML = data.hits.map(image => `
+        // 4. If Unsplash has no more images at all, break the loop 
+        if (data.hits.length === 0) {
+            break;
+        }
+
+        // 5. Add the images (which PHP has already filtered) to our list 
+        collectedImages.push(...data.hits);
+    }
+
+    return collectedImages;
+}
+
+async function performSearch() {
+    // Gets the user's search term and encodes it safely for use in the URL parameter.
+    const search = encodeURIComponent(input.value.trim() || null);
+    currentQuery = search;
+    currentPage = 1; // Reset page number for a new search
+    try {
+
+        // Fetches at least 10 image objects via our helper function 
+        const images = await fetchTenImages();
+        // Renders each found image as a card in the grid.
+        imageGrid.innerHTML = images.slice(0,10).map(image => `
             <div class="card-item">
                 <div class="picture-box">
                     <img class="picture-box-img" src="${image.webformatURL}" alt="${image.tags}">
@@ -37,6 +74,29 @@ async function performSearch() {
     }
 }
 
+async function loadMore() {
+    try {
+        const images = await fetchTenImages();
+        imageGrid.innerHTML += images.slice(0,10).map(image => `
+                        <div class="card-item">
+                <div class="picture-box">
+                    <img class="picture-box-img" src="${image.webformatURL}" alt="${image.tags}">
+                </div>
+
+                <div class="hover-dropdown-wrapper">
+                    <div class="hover-dropdown">
+                        <div>Tags: <span class="card-tags"></span> ${image.tags}</div>
+                        <div>Location:</span> ${image.location}</div>
+                        <div>Resolution:${image.imageWidth}x${image.imageHeight}</div>
+                    </div>
+                </div>
+            </div>
+            
+            `).join('');
+    }catch(error){
+        imageGrid.textContent = `Error loading more images: ${error.message}`;
+    }
+}
 
 button.addEventListener('click', async () => {
     performSearch();
