@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () { //Added listner for 
     var mapElement = document.getElementById('map'); //Choose element to add it in
     var map = window.L.map(mapElement).setView([51.505, -0.09], 13); //Create the map
 
-    window.mapInstance = map; //Scaling js connection
+    window.mapInstance = map;
 
     window.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { //Use openstreetmaps tilelayer
         maxZoom: 15, //Max zoom in 
@@ -10,7 +10,16 @@ document.addEventListener('DOMContentLoaded', function () { //Added listner for 
     }).addTo(map);
 
     map.on('click', async function(e) {
-        var coords = e.latlng;
+        let coords = e.latlng;
         console.log(coords);
+
+          try {
+            let response = await fetch(`../nominatimapi.php?lat=${coords.lat}&lng=${coords.lng}`);
+            let data = await response.json();
+            console.log("Location details:", data.country, data.city);
+        }
+        catch (error) {
+                console.error("Error fetching location", error);
+        }
     });
 });

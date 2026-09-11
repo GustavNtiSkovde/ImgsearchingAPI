@@ -4,18 +4,19 @@ const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
 
 async function performSearch() {
-    const search = encodeURIComponent(input.value.trim() || null);
+    const search = encodeURIComponent(input.value.trim() || null); //EncodeURI func encodes part of the address replacing special characters into UTF-8 escape characters, ?, =, / into %3F or %26
 
     try {
         const apiUrl = new URL('../api.php', import.meta.url);
-        apiUrl.searchParams.set('q', search);
-        const response = await fetch(apiUrl);
-        const data = await response.json();
+        apiUrl.searchParams.set('q', search); //creates / updates the query in an URLs search string 
+        const response = await fetch(apiUrl); // an expression that pauses an async func until server respondes with meta data
+        const data = await response.json(); //Parses an HTTP response into a usable object
 
         if (!response.ok || data.error) {
             throw new Error(data.error || 'Request failed');
         }
 
+        //"Print" out the html elements per img from hits
         imageGrid.innerHTML = data.hits.map(image => `
             <div class="card-item">
                 <div class="picture-box">
@@ -31,7 +32,7 @@ async function performSearch() {
                 </div>
             </div>
         `).join('');
-    } catch (error) {
+    } catch (error) { //Error handling if no imgs found or loadble
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
 }
@@ -47,7 +48,5 @@ form.addEventListener('submit', (event) => {
 });
 
 input.addEventListener('input', () => {
-    input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, '');
+    input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, ''); //Symboles to ignore/replace and with what 
 });
-
-
