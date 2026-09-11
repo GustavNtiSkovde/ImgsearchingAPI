@@ -70,6 +70,29 @@ async function performSearch() {
     }
 }
 
+async function loadMore() {
+    try {
+        const images = await fetchTenImages();
+        imageGrid.innerHTML += images.slice(0,10).map(image => `
+                        <div class="card-item">
+                <div class="picture-box">
+                    <img class="picture-box-img" src="${image.webformatURL}" alt="${image.tags}">
+                </div>
+
+                <div class="hover-dropdown-wrapper">
+                    <div class="hover-dropdown">
+                        <div>Tags: <span class="card-tags"></span> ${image.tags}</div>
+                        <div>Location:</span> ${image.location}</div>
+                        <div>Resolution:${image.imageWidth}x${image.imageHeight}</div>
+                    </div>
+                </div>
+            </div>
+            
+            `).join('');
+    }catch(error){
+        imageGrid.textContent = `Error loading more images: ${error.message}`;
+    }
+}
 
 button.addEventListener('click', async () => {
     performSearch();
@@ -83,3 +106,5 @@ form.addEventListener('submit', (event) => {
 input.addEventListener('input', () => {
     input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, '');
 });
+
+
