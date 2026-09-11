@@ -8,6 +8,7 @@ loadEnv(__DIR__ . '/.env');
 
 $accessKey = $_ENV['API_KEY'] ?? getenv('API_KEY') ?: '';
 $query = trim($_GET['q'] ?? '');
+$page = trim($_GET['page'] ?? 1);
 
 //Error handling if accessKey or the query is empty
 if ($accessKey === '' || $query === '') {
@@ -27,7 +28,9 @@ if (!function_exists('curl_init')) {
 $url = 'https://api.unsplash.com/search/photos?' . http_build_query([
     'client_id' => $accessKey,
     'query' => $query,
-    'per_page' => 20,
+    'page' => $page,
+    'per_page' => 30,
+    
 ]);
 
 $ch = curl_init($url);
