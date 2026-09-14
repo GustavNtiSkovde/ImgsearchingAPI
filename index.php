@@ -98,6 +98,7 @@
         </div>
       </div>
     </section>
+    
     <div class="split-divider" id="mapResizeHandle"></div>
     <button class="mobile-map-fab" id="mobileMapBtn">
       <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
