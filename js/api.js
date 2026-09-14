@@ -24,9 +24,8 @@ function renderCardHTML(image) {
 }
 
 async function performSearch() {
-    // Gets the user's search term and encodes it safely for use in the URL parameter.
-    const search = encodeURIComponent(input.value.trim() || null);
-    currentQuery = search;
+    // URLSearchParams encodes the query when the request URL is built.
+    currentQuery = input.value.trim();
     currentPage = 1; // Reset page number for a new search
     try {
 
@@ -80,6 +79,8 @@ async function fetchTenImages() {
 
     return collectedImages;
 }
+
+
 
 button.addEventListener('click', async () => {
     performSearch();

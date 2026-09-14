@@ -24,11 +24,24 @@ document.addEventListener('DOMContentLoaded', function () { //Added listner for 
         try {
             let response = await fetch(`../nominatimapi.php?lat=${coords.lat}&lng=${coords.lng}`);
             let data = await response.json();
-            console.log("Location details:", data.country, data.city);
+
+            //Error handling if no location given
+            if (!response.ok || data.error) {
+                throw new Error(data.error || 'Could not find this location');
+            }
             
             //Show city and country on the marker
             if (data.city ?? data.country) {
                 currentMarker.bindPopup(`<b>${data.city}</b>, ${data.country}`).openPopup();
+            }
+
+            // If data has anything add it into the query to be used in api.js
+            if (data.search_query) {
+                const searchInput = document.getElementById('searchInput');
+                const searchForm = document.getElementById('searchForm');
+
+                searchInput.value = data.search_query;
+                searchForm.requestSubmit(); //RequestSubmit to simulate a submit button to trigger search
             }
         }
         catch (error) {
