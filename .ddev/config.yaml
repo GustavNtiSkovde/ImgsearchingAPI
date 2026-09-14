@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name: ImageSearchinAPI
+=======
+name: ImgsearchingAPI
+>>>>>>> 81b1cc3f8224d1a14f71acd214d91f4f1c10d3a5
 type: php
 docroot: ""
 php_version: "8.4"
