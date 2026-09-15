@@ -15,6 +15,47 @@
   --radius-lg: 24px;
 }
 
+body.dark-theme {
+  --bg-app: #121412;
+  --surface: #1a1d1a;
+  --surface-tinted: #232824;
+  --border-subtle: #313a34;
+  --moss-primary: #5c8b6b;
+  --moss-hover: #71a382;
+  --moss-muted: #8ca393;
+  --moss-light: #2b3b30;
+  --text-primary: #e4e8e5;
+  --text-secondary: #a3b0a7;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle-btn {
+  background-color: var(--surface-tinted);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--moss-primary);
+  background-color: var(--moss-light);
+}
+
+body.dark-theme .moon-icon { display: none; }
+body.dark-theme .sun-icon { display: block !important; }
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -29,7 +70,24 @@ body {
   gap: 16px;
   background-color: var(--bg-app);
   color: var(--text-primary);
-  min-height: 100vh;
+  height: 100vh; 
+  overflow: hidden; 
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.site-footer {
+  margin-top: auto;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 1px 4px var(--shadow-color);
 }
 
 .top-bar {
@@ -463,17 +521,15 @@ body.is-resizing .split-divider::after {
 }
 
 @media (max-width: 768px) {
-body {
-  padding: 16px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background-color: var(--bg-app);
-  color: var(--text-primary);
-  height: 100vh;
-  overflow: hidden; 
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+  body { padding: 12px; }
+  .top-bar { flex-direction: column; align-items: stretch; }
+  .filter-wrapper { flex-direction: column; align-items: stretch; width: 100%; }
+  .scale-slider-wrapper { justify-content: space-between; }
+  .custom-filter-container { width: 100%; }
+  .main-content { flex-direction: column; min-height: auto; }
+  .split-divider { display: none; }
+  .mobile-map-fab { display: flex; }
+  .map-header-mobile { display: flex; }
   
   .map-section {
     position: fixed;
