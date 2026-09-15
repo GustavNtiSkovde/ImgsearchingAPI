@@ -7,7 +7,7 @@ let currentQuery = '';
 
 function renderCardHTML(image) {
     return `
-        <div class="card-item">
+        <div class="card-item" data-image-id="${image.ID}">
             <div class="picture-box">
                 <img class="picture-box-img" src="${image.webformatURL}" alt="${image.tags}">
             </div>
@@ -28,7 +28,6 @@ async function performSearch() {
     currentQuery = input.value.trim();
     currentPage = 1; // Reset page number for a new search
     try {
-
         // Fetches at least 10 image objects via our helper function 
         const images = await fetchTenImages();
         // Renders each found image as a card in the grid.
