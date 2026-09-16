@@ -71,11 +71,13 @@ body {
   background-color: var(--bg-app);
   color: var(--text-primary);
   height: 100vh; 
+  height: 100dvh;
   overflow: hidden; 
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .site-footer {
+  flex-shrink: 0; 
   margin-top: auto;
   padding: 24px;
   text-align: center;
@@ -94,6 +96,36 @@ body {
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+.search-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex: 1;
+}
+
+/* NEW: Logo Styles */
+.logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 36px;
+  width: 36px;
+  border-radius: var(--radius-sm);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.logo-link:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.site-logo {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
 .search-wrapper {
@@ -347,6 +379,30 @@ body {
   gap: 20px;
 }
 
+.load-more-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 12px 0;
+}
+
+.load-more-btn {
+  background-color: var(--surface-tinted);
+  color: var(--moss-primary);
+  border: 1px solid var(--border-subtle);
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.load-more-btn:hover {
+  background-color: var(--moss-primary);
+  color: var(--surface);
+  border-color: var(--moss-primary);
+}
+
 .split-divider {
   width: 16px;
   cursor: ew-resize;
@@ -523,9 +579,10 @@ body.is-resizing .split-divider::after {
 @media (max-width: 768px) {
   body { padding: 12px; }
   .top-bar { flex-direction: column; align-items: stretch; }
-  .filter-wrapper { flex-direction: column; align-items: stretch; width: 100%; }
-  .scale-slider-wrapper { justify-content: space-between; }
-  .custom-filter-container { width: 100%; }
+  .search-row { width: 100%; } 
+  .filter-wrapper { flex-direction: row; justify-content: space-between; width: 100%; }
+  .scale-slider-wrapper { flex: 1; justify-content: center; }
+  .custom-filter-container { flex: 1; }
   .main-content { flex-direction: column; min-height: auto; }
   .split-divider { display: none; }
   .mobile-map-fab { display: flex; }
