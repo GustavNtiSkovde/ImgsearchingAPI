@@ -15,7 +15,10 @@
 <body>
   <header class="top-bar">
     <div class="search-row">
+<<<<<<< HEAD
+=======
       
+>>>>>>> c40387b1d0b9ed12e14b43cdc6eff194add76c53
       <a href="#" class="logo-link" aria-label="Home">
         <img src="js/icon.svg" alt="ImgSearchingAPI Logo" class="site-logo" />
       </a>
@@ -34,49 +37,17 @@
     <div class="filter-wrapper">
       <div class="scale-slider-wrapper">
         <label for="gridScale" class="scale-label">Size:</label>
-        <input type="range" id="gridScale" min="120" max="450" value="240" step="10" class="scale-slider">
-      </div>
-      <div class="custom-filter-container" id="customFilterContainer">
-        <div class="custom-filter-trigger" id="customFilterTrigger">
-          <span>All</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </div>
-        <div class="custom-filter-dropdown">
-          <div class="custom-filter-option" data-value="all">All</div>
-          
-          <div class="custom-filter-group-wrapper">
-            <div class="custom-filter-group-header">
-              Filter 1
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-arrow"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-            <div class="custom-filter-group-content">
-              <div class="custom-filter-option sub-option" data-value="f1_1">Filter 1_1</div>
-              <div class="custom-filter-option sub-option" data-value="f1_2">Filter 1_2</div>
-            </div>
-          </div>
-
-          <div class="custom-filter-group-wrapper">
-            <div class="custom-filter-group-header">
-              Filter 2
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-arrow"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-            <div class="custom-filter-group-content">
-              <div class="custom-filter-option sub-option" data-value="f2_1">Filter 2_1</div>
-              <div class="custom-filter-option sub-option" data-value="f2_2">Filter 2_2</div>
-            </div>
-          </div>
-        </div>
-        <select id="imageTypeFilter" style="display: none;">
-          <option value="all">All</option>
-          <option value="f1_1">Filter 1_1</option>
-          <option value="f1_2">Filter 1_2</option>
-          <option value="f2_1">Filter 2_1</option>
-          <option value="f2_2">Filter 2_2</option>
-        </select>
+        <input type="range" id="gridScale" min="120" max="450" value="300" step="10" class="scale-slider">
       </div>
     </div>
   </header>
+
+  <!-- UPDATED: Only the requested 6 quick searches -->
   <div class="quick-suggestions" id="quickSuggestions">
+    <button type="button" class="suggestion-chip" data-tag="forest">
+      <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=50&h=50&fit=crop" alt="Forest" class="suggestion-thumb">
+      <span>Forest</span>
+    </button>
     <button type="button" class="suggestion-chip" data-tag="city">
       <img src="https://images.unsplash.com/photo-1449844908441-8829872d2607?w=50&h=50&fit=crop" alt="City" class="suggestion-thumb">
       <span>City</span>
@@ -85,35 +56,23 @@
       <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=50&h=50&fit=crop" alt="Landscape" class="suggestion-thumb">
       <span>Landscape</span>
     </button>
-    <button type="button" class="suggestion-chip" data-tag="forest">
-      <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=50&h=50&fit=crop" alt="Forest leaves" class="suggestion-thumb">
-      <span>Forest</span>
+    <button type="button" class="suggestion-chip" data-tag="ocean">
+      <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=50&h=50&fit=crop" alt="Ocean" class="suggestion-thumb">
+      <span>Ocean</span>
+    </button>
+    <button type="button" class="suggestion-chip" data-tag="animals">
+      <img src="https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=50&h=50&fit=crop" alt="Animals" class="suggestion-thumb">
+      <span>Animals</span>
+    </button>
+    <button type="button" class="suggestion-chip" data-tag="deserts">
+      <img src="https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?w=50&h=50&fit=crop" alt="Deserts" class="suggestion-thumb">
+      <span>Deserts</span>
     </button>
   </div>
+
   <main class="main-content">
     <section class="image-grid-section">
-      <div class="grid-container" id="imageGrid">
-        <div class="card-item">
-          <div class="picture-box"> 
-            <img class="picture-box-img" src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc" alt="Green forest leaves">
-          </div>
-          <div class="hover-dropdown-wrapper">
-            <div class="hover-dropdown">
-              <div class="tags-container">Tags: 
-                <span class="tag-pill" data-tag="nature">nature</span>
-                <span class="tag-pill" data-tag="forest">forest</span>
-                <span class="tag-pill" data-tag="green">green</span>
-              </div>
-              <div>Views: <span class="card-views">14,280</span></div>
-              <div>Resolution: <span class="card-res">1920x1080</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="load-more-wrapper">
-        <button id="loadMoreBtn" class="load-more-btn">Load More Images</button>
-      </div>
+      <div class="grid-container" id="imageGrid"></div>
     </section>
     
     <div class="split-divider" id="mapResizeHandle"></div>
