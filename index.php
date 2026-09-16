@@ -93,6 +93,9 @@
   <main class="main-content">
     <section class="image-grid-section">
       <div class="grid-container" id="imageGrid"></div>
+      <div class="load-more-wrapper">
+        <button id="loadMoreBtn" class="load-more-btn">Load More Images</button>
+      </div>
     </section>
     
     <div class="split-divider" id="mapResizeHandle"></div>
