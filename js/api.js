@@ -4,6 +4,7 @@ const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
 let currentPage = 1;
 let currentQuery = '';
+let randomMode = false;
 
 function renderCardHTML(image) {
     return `
@@ -26,6 +27,7 @@ function renderCardHTML(image) {
 async function performSearch() {
     // URLSearchParams encodes the query when the request URL is built.
     currentQuery = input.value.trim();
+    randomMode = false;
     currentPage = 1; // Reset page number for a new search
     try {
         // Fetches at least 10 image objects via our helper function 
@@ -38,9 +40,20 @@ async function performSearch() {
     }
 }
 
+async function loadRandomImages() {
+    randomMode = true;
+    currentPage = 1;
+    try {
+        const images = await fetchTenImages(true);
+        imageGrid.innerHTML = images.slice(0, 10).map(renderCardHTML).join('');
+    } catch (error) {
+        imageGrid.textContent = `Error loading images: ${error.message}`;
+    }
+}
+
 async function loadMore() {
     try {
-        const images = await fetchTenImages();
+        const images = await fetchTenImages(randomMode);
         const newCardsHTML = images.slice(0, 10).map(renderCardHTML).join('');
         imageGrid.insertAdjacentHTML('beforeend', newCardsHTML);
     }catch(error){
@@ -48,13 +61,17 @@ async function loadMore() {
     }
 }
 
-async function fetchTenImages() {
+async function fetchTenImages(random = false) {
     let collectedImages = [];
 
     while (collectedImages.length < 10) {
         const apiUrl = new URL('../api.php', import.meta.url);
-        apiUrl.searchParams.set('q', currentQuery);
-        apiUrl.searchParams.set('page', currentPage);
+        if (random) {
+            apiUrl.searchParams.set('random', '1');
+        } else {
+            apiUrl.searchParams.set('q', currentQuery);
+            apiUrl.searchParams.set('page', currentPage);
+        }
 
         // 2. Increment the page number for the next request 
         currentPage++;
@@ -79,7 +96,9 @@ async function fetchTenImages() {
     return collectedImages;
 }
 
-
+document.addEventListener('DOMContentLoaded', function () {
+    loadRandomImages();
+});
 
 button.addEventListener('click', async () => {
     performSearch();

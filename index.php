@@ -21,7 +21,7 @@
     <div class="filter-wrapper">
       <div class="scale-slider-wrapper">
         <label for="gridScale" class="scale-label">Size:</label>
-        <input type="range" id="gridScale" min="120" max="450" value="240" step="10" class="scale-slider">
+        <input type="range" id="gridScale" min="120" max="450" value="300" step="10" class="scale-slider">
       </div>
       <div class="custom-filter-container" id="customFilterContainer">
         <div class="custom-filter-trigger" id="customFilterTrigger">
@@ -79,24 +79,7 @@
   </div>
   <main class="main-content">
     <section class="image-grid-section">
-      <div class="grid-container" id="imageGrid">
-        <div class="card-item">
-          <div class="picture-box"> 
-            <img class="picture-box-img" src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc" alt="Green forest leaves">
-          </div>
-          <div class="hover-dropdown-wrapper">
-            <div class="hover-dropdown">
-              <div class="tags-container">Tags: 
-                <span class="tag-pill" data-tag="nature">nature</span>
-                <span class="tag-pill" data-tag="forest">forest</span>
-                <span class="tag-pill" data-tag="green">green</span>
-              </div>
-              <div>Views: <span class="card-views">14,280</span></div>
-              <div>Resolution: <span class="card-res">1920x1080</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="grid-container" id="imageGrid"></div>
     </section>
     
     <div class="split-divider" id="mapResizeHandle"></div>
