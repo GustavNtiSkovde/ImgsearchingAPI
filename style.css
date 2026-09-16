@@ -15,7 +15,10 @@
   --radius-lg: 24px;
 }
 
+<<<<<<< HEAD
 /* Replace the @media block with this class */
+=======
+>>>>>>> 312dce4b7e796ca001ea872e76d83ec328d5cb7d
 body.dark-theme {
   --bg-app: #121412;
   --surface: #1a1d1a;
@@ -30,12 +33,18 @@ body.dark-theme {
   --shadow-color: rgba(0, 0, 0, 0.4);
 }
 
+<<<<<<< HEAD
 /* Add a smooth transition so the colors don't snap harshly */
+=======
+>>>>>>> 312dce4b7e796ca001ea872e76d83ec328d5cb7d
 body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+<<<<<<< HEAD
 /* Theme Toggle Button Styles */
+=======
+>>>>>>> 312dce4b7e796ca001ea872e76d83ec328d5cb7d
 .theme-toggle-btn {
   background-color: var(--surface-tinted);
   border: 1px solid var(--border-subtle);
@@ -73,7 +82,24 @@ body {
   gap: 16px;
   background-color: var(--bg-app);
   color: var(--text-primary);
-  min-height: 100vh;
+  height: 100vh; 
+  overflow: hidden; 
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.site-footer {
+  margin-top: auto;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 1px 4px var(--shadow-color);
 }
 
 .site-footer {
@@ -329,7 +355,7 @@ body {
   display: flex;
   align-items: stretch;
   flex: 1;
-  min-height: 650px;
+  min-height: 0; 
 }
 
 .image-grid-section {

@@ -1,21 +1,58 @@
-let currentPage = 1;
-let currentQuery = '';
-
 const input = document.getElementById('searchInput');
 const button = document.getElementById('searchSubmit');
 const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
+let currentPage = 1;
+let currentQuery = '';
+
+function renderCardHTML(image) {
+    return `
+        <div class="card-item" data-image-id="${image.ID}">
+            <div class="picture-box">
+                <img class="picture-box-img" src="${image.webformatURL}" alt="${image.tags}">
+            </div>
+
+            <div class="hover-dropdown-wrapper">
+                <div class="hover-dropdown">
+                    <div>Tags: <span class="card-tags"></span> ${image.tags}</div>
+                    <div>Location: ${image.location || 'N/A'}</div>
+                    <div>Resolution: ${image.imageWidth}x${image.imageHeight}</div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+async function performSearch() {
+    // URLSearchParams encodes the query when the request URL is built.
+    currentQuery = input.value.trim();
+    currentPage = 1; // Reset page number for a new search
+    try {
+        // Fetches at least 10 image objects via our helper function 
+        const images = await fetchTenImages();
+        // Renders each found image as a card in the grid.
+        imageGrid.innerHTML = images.slice(0,10).map(renderCardHTML).join('');
+    } catch (error) {
+        // Displays a clear error message if the search fails.
+        imageGrid.textContent = `Error loading images: ${error.message}`;
+    }
+}
+
+async function loadMore() {
+    try {
+        const images = await fetchTenImages();
+        const newCardsHTML = images.slice(0, 10).map(renderCardHTML).join('');
+        imageGrid.insertAdjacentHTML('beforeend', newCardsHTML);
+    }catch(error){
+        imageGrid.textContent = `Error loading more images: ${error.message}`;
+    }
+}
 
 async function fetchTenImages() {
     let collectedImages = [];
 
-    // Continue the loop as long as we have fewer than 10 images 
     while (collectedImages.length < 10) {
-        // 1. Build URL with search query and current page number
         const apiUrl = new URL('../api.php', import.meta.url);
-        apiUrl.searchParams.set('q', search); //creates / updates the query in an URLs search string 
-        const response = await fetch(apiUrl); // an expression that pauses an async func until server respondes with meta data
-        const data = await response.json(); //Parses an HTTP response into a usable object
         apiUrl.searchParams.set('q', currentQuery);
         apiUrl.searchParams.set('page', currentPage);
 
@@ -30,8 +67,6 @@ async function fetchTenImages() {
             throw new Error(data.error || 'Request failed');
         }
 
-        //"Print" out the html elements per img from hits
-        imageGrid.innerHTML = data.hits.map(image => `
         // 4. If Unsplash has no more images at all, break the loop 
         if (data.hits.length === 0) {
             break;
@@ -44,59 +79,7 @@ async function fetchTenImages() {
     return collectedImages;
 }
 
-async function performSearch() {
-    // Gets the user's search term and encodes it safely for use in the URL parameter.
-    const search = encodeURIComponent(input.value.trim() || null);
-    currentQuery = search;
-    currentPage = 1; // Reset page number for a new search
-    try {
 
-        // Fetches at least 10 image objects via our helper function 
-        const images = await fetchTenImages();
-        // Renders each found image as a card in the grid.
-        imageGrid.innerHTML = images.slice(0,10).map(image => `
-            <div class="card-item">
-                <div class="picture-box">
-                    <img class="picture-box-img" src="${image.webformatURL}" alt="${image.tags}">
-                </div>
-
-                <div class="hover-dropdown-wrapper">
-                    <div class="hover-dropdown">
-                        <div>Tags: <span class="card-tags"></span> ${image.tags}</div>
-                        <div>Location:</span> ${image.location}</div>
-                        <div>Resolution:${image.imageWidth}x${image.imageHeight}</div>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    } catch (error) { //Error handling if no imgs found or loadble
-        imageGrid.textContent = `Error loading images: ${error.message}`;
-    }
-}
-
-async function loadMore() {
-    try {
-        const images = await fetchTenImages();
-        imageGrid.innerHTML += images.slice(0,10).map(image => `
-                        <div class="card-item">
-                <div class="picture-box">
-                    <img class="picture-box-img" src="${image.webformatURL}" alt="${image.tags}">
-                </div>
-
-                <div class="hover-dropdown-wrapper">
-                    <div class="hover-dropdown">
-                        <div>Tags: <span class="card-tags"></span> ${image.tags}</div>
-                        <div>Location:</span> ${image.location}</div>
-                        <div>Resolution:${image.imageWidth}x${image.imageHeight}</div>
-                    </div>
-                </div>
-            </div>
-            
-            `).join('');
-    }catch(error){
-        imageGrid.textContent = `Error loading more images: ${error.message}`;
-    }
-}
 
 button.addEventListener('click', async () => {
     performSearch();
@@ -108,5 +91,14 @@ form.addEventListener('submit', (event) => {
 });
 
 input.addEventListener('input', () => {
-    input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, ''); //Symboles to ignore/replace and with what 
+    input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, '');
+});
+
+document.addEventListener('keydown', (event) => {
+  // Kontrollera om tangenten som tryckts ner är 'r' eller 'R'
+    if (event.key === 'r' || event.key === 'R') {
+        console.log('Du tryckte på tangenten r!');
+        loadMore();
+        // Skriv din kod här som ska händer när man trycker på r
+    }
 });
