@@ -15,6 +15,50 @@
   --radius-lg: 24px;
 }
 
+/* Replace the @media block with this class */
+body.dark-theme {
+  --bg-app: #121412;
+  --surface: #1a1d1a;
+  --surface-tinted: #232824;
+  --border-subtle: #313a34;
+  --moss-primary: #5c8b6b;
+  --moss-hover: #71a382;
+  --moss-muted: #8ca393;
+  --moss-light: #2b3b30;
+  --text-primary: #e4e8e5;
+  --text-secondary: #a3b0a7;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Add a smooth transition so the colors don't snap harshly */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme Toggle Button Styles */
+.theme-toggle-btn {
+  background-color: var(--surface-tinted);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--moss-primary);
+  background-color: var(--moss-light);
+}
+
+body.dark-theme .moon-icon { display: none; }
+body.dark-theme .sun-icon { display: block !important; }
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -32,6 +76,22 @@ body {
   min-height: 100vh;
 }
 
+.site-footer {
+  margin-top: auto;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 1px 4px var(--shadow-color);
+}
+
+/* Remaining Base Styles */
 .top-bar {
   display: flex;
   gap: 12px;
