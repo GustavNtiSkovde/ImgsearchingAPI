@@ -25,17 +25,45 @@ function renderCardHTML(image) {
 }
 
 async function performSearch() {
-    // URLSearchParams encodes the query when the request URL is built.
-    currentQuery = input.value.trim();
+    
     randomMode = false;
-    currentPage = 1; // Reset page number for a new search
+
+    // Guard clause: Stop execution immediately if the button is disabled
+    if (button.disabled) return;
+
+    // Disable the button immediately when a new search starts
+    button.disabled = true;
+
+    // Start a timer to re-enable the button after 5 seconds
+    setTimeout(() => {
+        button.disabled = false;
+    }, 5000);
+  
+    // URLSearchParams encodes the query when the request URL is built.
+    const search = encodeURIComponent(input.value.trim() || null);
+    currentQuery = search;
+    currentPage = 1;
+
     try {
         // Fetches at least 10 image objects via our helper function 
         const images = await fetchTenImages();
-        // Renders each found image as a card in the grid.
-        imageGrid.innerHTML = images.slice(0,10).map(renderCardHTML).join('');
+        
+        // Handle zero results
+        if (images.length === 0) {
+            imageGrid.innerHTML = `
+                <div class="no-results-container">
+                    <svg class="no-results-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                    <p class="no-results-text">No images found for "${currentQuery}".</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Render each found image as a card in the grid
+        imageGrid.innerHTML = images.slice(0, 10).map(renderCardHTML).join('');
     } catch (error) {
-        // Displays a clear error message if the search fails.
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
 }
@@ -56,7 +84,7 @@ async function loadMore() {
         const images = await fetchTenImages(randomMode);
         const newCardsHTML = images.slice(0, 10).map(renderCardHTML).join('');
         imageGrid.insertAdjacentHTML('beforeend', newCardsHTML);
-    }catch(error){
+    } catch(error) {
         imageGrid.textContent = `Error loading more images: ${error.message}`;
     }
 }
@@ -73,10 +101,10 @@ async function fetchTenImages(random = false) {
             apiUrl.searchParams.set('page', currentPage);
         }
 
-        // 2. Increment the page number for the next request 
+        // Increment the page number for the next request
         currentPage++;
 
-        // 3. Fetch data from PHP
+        // Fetch data from PHP
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -84,12 +112,12 @@ async function fetchTenImages(random = false) {
             throw new Error(data.error || 'Request failed');
         }
 
-        // 4. If Unsplash has no more images at all, break the loop 
+        // If Unsplash has no more images at all, break the loop
         if (data.hits.length === 0) {
             break;
         }
 
-        // 5. Add the images (which PHP has already filtered) to our list 
+        // Add the images (which PHP has already filtered) to our list
         collectedImages.push(...data.hits);
     }
 
@@ -111,13 +139,4 @@ form.addEventListener('submit', (event) => {
 
 input.addEventListener('input', () => {
     input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, '');
-});
-
-document.addEventListener('keydown', (event) => {
-  // Kontrollera om tangenten som tryckts ner är 'r' eller 'R'
-    if (event.key === 'r' || event.key === 'R') {
-        console.log('Du tryckte på tangenten r!');
-        loadMore();
-        // Skriv din kod här som ska händer när man trycker på r
-    }
 });
