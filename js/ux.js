@@ -18,7 +18,7 @@ if (searchInp && searchFrm) {
             const chip = event.target.closest('.suggestion-chip');
             if (chip) {
                 searchInp.value = chip.dataset.tag;
-                searchFrm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                searchFrm.requestSubmit();
             }
         });
     }

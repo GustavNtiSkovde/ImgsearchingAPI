@@ -106,15 +106,15 @@ foreach ($images as $image) {
         $tags = array_keys($image['topic_submissions']);
     }
 
-    //Use only the location attached to the photo, never the photographer's profile.
+    //Prefer the photo location, then use the photographer's profile location as a fallback.
     $photoLocation = $image['location'] ?? [];
-    $location = $photoLocation['name'] ?? trim(implode(', ', array_filter([
+    $location = trim($photoLocation['name'] ?? '') ?: trim(implode(', ', array_filter([
         $photoLocation['city'] ?? null,
         $photoLocation['country'] ?? null, 
-    ]))) ?: null;
+    ]))) ?: trim($image['user']['location'] ?? '');
 
-    //Skips imgs without tags or location
-    if (empty($tags) || empty($location)) {
+    //Skip images without tags or any usable location.
+    if (empty($tags) || $location === '') {
         continue;
     }
     $processedHits[] = [

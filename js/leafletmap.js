@@ -39,6 +39,11 @@ document.addEventListener('DOMContentLoaded', function () { //Added listner for 
             }
 
             const image = data.hits[0];
+            const locationLabel = card.querySelector('.card-location');
+            if (locationLabel && image.location) {
+                locationLabel.textContent = image.location;
+            }
+
             const latitude = Number(image.latitude);
             const longitude = Number(image.longitude);
 

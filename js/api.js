@@ -17,7 +17,7 @@ function renderCardHTML(image) {
             <div class="hover-dropdown-wrapper">
                 <div class="hover-dropdown">
                     <div>Tags: <span class="card-tags"></span> ${image.tags}</div>
-                    <div>Location: ${image.location || 'N/A'}</div>
+                    <div>Location: <span class="card-location">${image.location || 'N/A'}</span></div>
                     <div>Resolution: ${image.imageWidth}x${image.imageHeight}</div>
                 </div>
             </div>
@@ -41,8 +41,7 @@ async function performSearch() {
     }, 5000);
 
     // URLSearchParams encodes the query when the request URL is built.
-    const search = encodeURIComponent(input.value.trim() || null);
-    currentQuery = search;
+    currentQuery = input.value.trim();
     currentPage = 1;
 
     try {
