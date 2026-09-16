@@ -35,6 +35,7 @@
       <div class="scale-slider-wrapper">
         <label for="gridScale" class="scale-label">Size:</label>
         <input type="range" id="gridScale" min="120" max="450" value="300" step="10" class="scale-slider">
+
       </div>
       <div class="custom-filter-container" id="customFilterContainer">
         <div class="custom-filter-trigger" id="customFilterTrigger">
@@ -76,7 +77,12 @@
       </div>
     </div>
   </header>
+
   <div class="quick-suggestions" id="quickSuggestions">
+    <button type="button" class="suggestion-chip" data-tag="forest">
+      <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=50&h=50&fit=crop" alt="Forest" class="suggestion-thumb">
+      <span>Forest</span>
+    </button>
     <button type="button" class="suggestion-chip" data-tag="city">
       <img src="https://images.unsplash.com/photo-1449844908441-8829872d2607?w=50&h=50&fit=crop" alt="City" class="suggestion-thumb">
       <span>City</span>
@@ -85,14 +91,24 @@
       <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=50&h=50&fit=crop" alt="Landscape" class="suggestion-thumb">
       <span>Landscape</span>
     </button>
-    <button type="button" class="suggestion-chip" data-tag="forest">
-      <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=50&h=50&fit=crop" alt="Forest leaves" class="suggestion-thumb">
-      <span>Forest</span>
+    <button type="button" class="suggestion-chip" data-tag="ocean">
+      <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=50&h=50&fit=crop" alt="Ocean" class="suggestion-thumb">
+      <span>Ocean</span>
+    </button>
+    <button type="button" class="suggestion-chip" data-tag="animals">
+      <img src="https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=50&h=50&fit=crop" alt="Animals" class="suggestion-thumb">
+      <span>Animals</span>
+    </button>
+    <button type="button" class="suggestion-chip" data-tag="deserts">
+      <img src="https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?w=50&h=50&fit=crop" alt="Deserts" class="suggestion-thumb">
+      <span>Deserts</span>
     </button>
   </div>
+
   <main class="main-content">
     <section class="image-grid-section">
       <div class="grid-container" id="imageGrid"></div>
+
       <div class="load-more-wrapper">
         <button id="loadMoreBtn" class="load-more-btn">Load More Images</button>
       </div>
