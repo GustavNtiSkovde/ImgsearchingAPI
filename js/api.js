@@ -2,6 +2,7 @@ const input = document.getElementById('searchInput');
 const button = document.getElementById('searchSubmit');
 const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
+const loadMoreBtn = document.getElementById("loadMoreBtn");
 let currentPage = 1;
 let currentQuery = '';
 let randomMode = false;
@@ -128,15 +129,48 @@ document.addEventListener('DOMContentLoaded', function () {
     loadRandomImages();
 });
 
+// Trigger search when the search button is clicked
 button.addEventListener('click', async () => {
     performSearch();
 });
 
+// Prevent page reload on form submission and trigger search
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     performSearch();
 });
 
+// Sanitize search input to allow only allowed characters in real time
 input.addEventListener('input', () => {
     input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, '');
 });
+
+// Attach event listener for loading more images if the button exists in the DOM
+if (loadMoreBtn) {
+    loadMoreBtn.addEventListener("click", () => {
+        const originalText = loadMoreBtn.innerText;
+        
+        // Apply visual loading state and disable the button to prevent duplicate clicks
+        loadMoreBtn.innerText = "Loading...";
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.style.opacity = "0.7";
+        loadMoreBtn.style.cursor = "wait";
+
+        // Delay the execution to simulate an API request and reset button state afterwards
+        setTimeout(() => {
+            loadMore();
+            console.log("Ready to fetch more images from API!");
+            
+            // Reset button state after loading completes
+            loadMoreBtn.innerText = originalText;
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.style.opacity = "1";
+            loadMoreBtn.style.cursor = "pointer";
+        }, 1000);
+
+        // Note: This line executes immediately after setting the timeout
+        loadMoreBtn.innerText = "Load More Images";
+    });
+}
+});
+

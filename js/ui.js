@@ -181,28 +181,3 @@ if (themeToggleBtn) {
   });
 }
 
-//load more button
-const loadMoreBtn = document.getElementById("loadMoreBtn");
-
-if (loadMoreBtn) {
-  loadMoreBtn.addEventListener("click", () => {
-    const originalText = loadMoreBtn.innerText;
-    
-    //loading state
-    loadMoreBtn.innerText = "Loading...";
-    loadMoreBtn.disabled = true;
-    loadMoreBtn.style.opacity = "0.7";
-    loadMoreBtn.style.cursor = "wait";
-
-    //simulate request to API (replace this with actual fetch logic)
-    setTimeout(() => {
-      console.log("Ready to fetch more images from API!");
-      
-      // Reset button state after load completes
-      loadMoreBtn.innerText = originalText;
-      loadMoreBtn.disabled = false;
-      loadMoreBtn.style.opacity = "1";
-      loadMoreBtn.style.cursor = "pointer";
-    }, 1000);
-  });
-}
