@@ -2,8 +2,10 @@ const input = document.getElementById('searchInput');
 const button = document.getElementById('searchSubmit');
 const form = document.getElementById('searchForm');
 const imageGrid = document.getElementById('imageGrid');
+const loadMoreBtn = document.getElementById("loadMoreBtn");
 let currentPage = 1;
 let currentQuery = '';
+let randomMode = false;
 
 function renderCardHTML(image) {
     return `
@@ -24,42 +26,86 @@ function renderCardHTML(image) {
 }
 
 async function performSearch() {
+    
+    randomMode = false;
+
+    // Guard clause: Stop execution immediately if the button is disabled
+    if (button.disabled) return;
+
+    // Disable the button immediately when a new search starts
+    button.disabled = true;
+
+    // Start a timer to re-enable the button after 5 seconds
+    setTimeout(() => {
+        button.disabled = false;
+    }, 5000);
+
     // URLSearchParams encodes the query when the request URL is built.
-    currentQuery = input.value.trim();
-    currentPage = 1; // Reset page number for a new search
+    const search = encodeURIComponent(input.value.trim() || null);
+    currentQuery = search;
+    currentPage = 1;
+
     try {
         // Fetches at least 10 image objects via our helper function 
         const images = await fetchTenImages();
-        // Renders each found image as a card in the grid.
-        imageGrid.innerHTML = images.slice(0,10).map(renderCardHTML).join('');
+        
+        // Handle zero results
+        if (images.length === 0) {
+            imageGrid.innerHTML = `
+                <div class="no-results-container">
+                    <svg class="no-results-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                    <p class="no-results-text">No images found for "${currentQuery}".</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Render each found image as a card in the grid
+        imageGrid.innerHTML = images.slice(0, 10).map(renderCardHTML).join('');
     } catch (error) {
-        // Displays a clear error message if the search fails.
+        imageGrid.textContent = `Error loading images: ${error.message}`;
+    }
+}
+
+async function loadRandomImages() {
+    randomMode = true;
+    currentPage = 1;
+    try {
+        const images = await fetchTenImages(true);
+        imageGrid.innerHTML = images.slice(0, 10).map(renderCardHTML).join('');
+    } catch (error) {
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
 }
 
 async function loadMore() {
     try {
-        const images = await fetchTenImages();
+        const images = await fetchTenImages(randomMode);
         const newCardsHTML = images.slice(0, 10).map(renderCardHTML).join('');
         imageGrid.insertAdjacentHTML('beforeend', newCardsHTML);
-    }catch(error){
+    } catch(error) {
         imageGrid.textContent = `Error loading more images: ${error.message}`;
     }
 }
 
-async function fetchTenImages() {
+async function fetchTenImages(random = false) {
     let collectedImages = [];
 
     while (collectedImages.length < 10) {
         const apiUrl = new URL('../api.php', import.meta.url);
-        apiUrl.searchParams.set('q', currentQuery);
-        apiUrl.searchParams.set('page', currentPage);
+        if (random) {
+            apiUrl.searchParams.set('random', '1');
+        } else {
+            apiUrl.searchParams.set('q', currentQuery);
+            apiUrl.searchParams.set('page', currentPage);
+        }
 
-        // 2. Increment the page number for the next request 
+        // Increment the page number for the next request
         currentPage++;
 
-        // 3. Fetch data from PHP
+        // Fetch data from PHP
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -67,38 +113,62 @@ async function fetchTenImages() {
             throw new Error(data.error || 'Request failed');
         }
 
-        // 4. If Unsplash has no more images at all, break the loop 
+        // If Unsplash has no more images at all, break the loop
         if (data.hits.length === 0) {
             break;
         }
 
-        // 5. Add the images (which PHP has already filtered) to our list 
+        // Add the images (which PHP has already filtered) to our list
         collectedImages.push(...data.hits);
     }
 
     return collectedImages;
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    loadRandomImages();
+});
 
-
+// Trigger search when the search button is clicked
 button.addEventListener('click', async () => {
     performSearch();
 });
 
+// Prevent page reload on form submission and trigger search
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     performSearch();
 });
 
+// Sanitize search input to allow only allowed characters in real time
 input.addEventListener('input', () => {
     input.value = input.value.replace(/[^a-zA-Z0-9åäöÅÄÖ &%]/g, '');
 });
 
-document.addEventListener('keydown', (event) => {
-  // Kontrollera om tangenten som tryckts ner är 'r' eller 'R'
-    if (event.key === 'r' || event.key === 'R') {
-        console.log('Du tryckte på tangenten r!');
-        loadMore();
-        // Skriv din kod här som ska händer när man trycker på r
-    }
-});
+// Attach event listener for loading more images if the button exists in the DOM
+if (loadMoreBtn) {
+    loadMoreBtn.addEventListener("click", () => {
+        const originalText = loadMoreBtn.innerText;
+        
+        // Apply visual loading state and disable the button to prevent duplicate clicks
+        loadMoreBtn.innerText = "Loading...";
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.style.opacity = "0.7";
+        loadMoreBtn.style.cursor = "wait";
+
+        // Delay the execution to simulate an API request and reset button state afterwards
+        setTimeout(() => {
+            loadMore();
+            console.log("Ready to fetch more images from API!");
+            
+            // Reset button state after loading completes
+            loadMoreBtn.innerText = originalText;
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.style.opacity = "1";
+            loadMoreBtn.style.cursor = "pointer";
+        }, 1000);
+
+        // Note: This line executes immediately after setting the timeout
+        loadMoreBtn.innerText = "Load More Images";
+    });
+};

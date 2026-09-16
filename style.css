@@ -524,20 +524,20 @@ body.is-resizing .split-divider::after {
 .no-results-container {
     display: flex;
     flex-direction: column; 
-    align-items: center;    
+    align-items: center;   
     justify-content: center;
     grid-column: 1 / -1;    
-    padding: 100px 20px;    
+    padding: 100px 20px;     
     text-align: center;
 }
 
-
 .no-results-icon {
-    width: 150px;          
+    width: 150px;           
     height: 150px;
-    color: #121212;       
-    margin-bottom: 20px;  
+    color: #121212;      
+    margin-bottom: 20px;    
 }
+
 
 .no-results-text {
     font-size: 20px;

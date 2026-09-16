@@ -15,10 +15,7 @@
 <body>
   <header class="top-bar">
     <div class="search-row">
-<<<<<<< HEAD
-=======
       
->>>>>>> c40387b1d0b9ed12e14b43cdc6eff194add76c53
       <a href="#" class="logo-link" aria-label="Home">
         <img src="js/icon.svg" alt="ImgSearchingAPI Logo" class="site-logo" />
       </a>
@@ -38,11 +35,49 @@
       <div class="scale-slider-wrapper">
         <label for="gridScale" class="scale-label">Size:</label>
         <input type="range" id="gridScale" min="120" max="450" value="300" step="10" class="scale-slider">
+
+      </div>
+      <div class="custom-filter-container" id="customFilterContainer">
+        <div class="custom-filter-trigger" id="customFilterTrigger">
+          <span>All</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div class="custom-filter-dropdown">
+          <div class="custom-filter-option" data-value="all">All</div>
+          
+          <div class="custom-filter-group-wrapper">
+            <div class="custom-filter-group-header">
+              Filter 1
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-arrow"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="custom-filter-group-content">
+              <div class="custom-filter-option sub-option" data-value="f1_1">Filter 1_1</div>
+              <div class="custom-filter-option sub-option" data-value="f1_2">Filter 1_2</div>
+            </div>
+          </div>
+
+          <div class="custom-filter-group-wrapper">
+            <div class="custom-filter-group-header">
+              Filter 2
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-arrow"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="custom-filter-group-content">
+              <div class="custom-filter-option sub-option" data-value="f2_1">Filter 2_1</div>
+              <div class="custom-filter-option sub-option" data-value="f2_2">Filter 2_2</div>
+            </div>
+          </div>
+        </div>
+        <select id="imageTypeFilter" style="display: none;">
+          <option value="all">All</option>
+          <option value="f1_1">Filter 1_1</option>
+          <option value="f1_2">Filter 1_2</option>
+          <option value="f2_1">Filter 2_1</option>
+          <option value="f2_2">Filter 2_2</option>
+        </select>
       </div>
     </div>
   </header>
 
-  <!-- UPDATED: Only the requested 6 quick searches -->
   <div class="quick-suggestions" id="quickSuggestions">
     <button type="button" class="suggestion-chip" data-tag="forest">
       <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=50&h=50&fit=crop" alt="Forest" class="suggestion-thumb">
@@ -73,6 +108,10 @@
   <main class="main-content">
     <section class="image-grid-section">
       <div class="grid-container" id="imageGrid"></div>
+
+      <div class="load-more-wrapper">
+        <button id="loadMoreBtn" class="load-more-btn">Load More Images</button>
+      </div>
     </section>
     
     <div class="split-divider" id="mapResizeHandle"></div>
