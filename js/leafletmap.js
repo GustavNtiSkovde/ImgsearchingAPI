@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () { //Added listner for 
     // Cards are rendered dynamically, so handle all image clicks from the document.
     document.addEventListener('click', async function(event) {
         const card = event.target.closest('.card-item');
+        if (!card) return;
 
         const imageId = card.dataset.imageId;
 
@@ -38,19 +39,20 @@ document.addEventListener('DOMContentLoaded', function () { //Added listner for 
             }
 
             const image = data.hits[0];
-            // Images without location data cannot be placed on the map.
-            if (!Number.isFinite(Number(image.latitude)) || !Number.isFinite(Number(image.longitude))) {
-                console.warn('This image has no coordinates');
+            const latitude = Number(image.latitude);
+            const longitude = Number(image.longitude);
+
+            // Images without coordinate data cannot be placed on the map.
+            if (image.latitude == null || image.latitude === '' || image.longitude == null || image.longitude === ''
+                || !Number.isFinite(latitude) || !Number.isFinite(longitude)) { //IsFinite checks if number is a real numer = true or if numer is infinity or negative infinity
+                window.alert('No coordinates given for this image.');
                 return;
             }
 
-            const imageCoords = [Number(image.latitude), Number(image.longitude)];
+            const imageCoords = [latitude, longitude];
             if (currentMarker) currentMarker.remove();
 
-            currentMarker = L.marker(imageCoords)
-                .addTo(map)
-                .bindPopup(`<b>${image.location}</b><br>Coordinates: ${image.longitude} ${image.latitude}`)
-                .openPopup();
+            currentMarker = L.marker(imageCoords).addTo(map).bindPopup(`<b>${image.location}</b><br>Coordinates: ${image.longitude} ${image.latitude}`).openPopup();
 
             map.setView(imageCoords, 13);
         } catch (error) {
