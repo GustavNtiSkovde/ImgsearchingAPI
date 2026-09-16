@@ -5,6 +5,7 @@ const imageGrid = document.getElementById('imageGrid');
 const loadMoreBtn = document.getElementById("loadMoreBtn");
 let currentPage = 1;
 let currentQuery = '';
+let randomMode = false;
 
 if (loadMoreBtn) {
     loadMoreBtn.style.display = 'none';
@@ -29,6 +30,8 @@ function renderCardHTML(image) {
 }
 
 async function performSearch() {
+    
+    randomMode = false;
 
     // Guard clause: Stop execution immediately if the button is disabled
     if (button.disabled) return;
@@ -44,8 +47,8 @@ async function performSearch() {
     setTimeout(() => {
         button.disabled = false;
     }, 5000);
-
-    // Fetch and encode the search term safely for use in the URL parameter
+  
+    // URLSearchParams encodes the query when the request URL is built.
     const search = encodeURIComponent(input.value.trim() || null);
     currentQuery = search;
     currentPage = 1;
@@ -76,9 +79,20 @@ async function performSearch() {
     }
 }
 
+async function loadRandomImages() {
+    randomMode = true;
+    currentPage = 1;
+    try {
+        const images = await fetchTenImages(true);
+        imageGrid.innerHTML = images.slice(0, 10).map(renderCardHTML).join('');
+    } catch (error) {
+        imageGrid.textContent = `Error loading images: ${error.message}`;
+    }
+}
+
 async function loadMore() {
     try {
-        const images = await fetchTenImages();
+        const images = await fetchTenImages(randomMode);
         const newCardsHTML = images.slice(0, 10).map(renderCardHTML).join('');
         imageGrid.insertAdjacentHTML('beforeend', newCardsHTML);
     } catch(error) {
@@ -86,13 +100,17 @@ async function loadMore() {
     }
 }
 
-async function fetchTenImages() {
+async function fetchTenImages(random = false) {
     let collectedImages = [];
 
     while (collectedImages.length < 10) {
         const apiUrl = new URL('../api.php', import.meta.url);
-        apiUrl.searchParams.set('q', currentQuery);
-        apiUrl.searchParams.set('page', currentPage);
+        if (random) {
+            apiUrl.searchParams.set('random', '1');
+        } else {
+            apiUrl.searchParams.set('q', currentQuery);
+            apiUrl.searchParams.set('page', currentPage);
+        }
 
         // Increment the page number for the next request
         currentPage++;
@@ -117,7 +135,9 @@ async function fetchTenImages() {
     return collectedImages;
 }
 
-
+document.addEventListener('DOMContentLoaded', function () {
+    loadRandomImages();
+});
 
 // Trigger search when the search button is clicked
 button.addEventListener('click', async () => {
@@ -158,3 +178,5 @@ if (loadMoreBtn) {
         }
     });
 }
+});
+
