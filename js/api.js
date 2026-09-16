@@ -24,18 +24,18 @@ function renderCardHTML(image) {
 }
 
 async function performSearch() {
-    // Dörrvakt: Om knappen redan är avstängd, stoppar vi direkt!
+    // Guard clause: Stop execution immediately if the button is disabled
     if (button.disabled) return;
 
-    // Lås knappen direkt när en ny sökning startar
+    // Disable the button immediately when a new search starts
     button.disabled = true;
 
-    // Starta timern som låser upp knappen igen efter 2 sekunder
+    // Start a timer to re-enable the button after 5 seconds
     setTimeout(() => {
         button.disabled = false;
     }, 5000);
 
-    // 4. Hämta och koda sökordet
+    // Fetch and encode the search term safely for use in the URL parameter
     const search = encodeURIComponent(input.value.trim() || null);
     currentQuery = search;
     currentPage = 1;
@@ -43,7 +43,7 @@ async function performSearch() {
     try {
         const images = await fetchTenImages();
         
-        // Hantera 0 resultat 🎨
+        // Handle zero results
         if (images.length === 0) {
             imageGrid.innerHTML = `
                 <div class="no-results-container">
@@ -56,20 +56,19 @@ async function performSearch() {
             return;
         }
 
-        // Rita ut bilderna i galleriet 🖼️
+        // Render each found image as a card in the grid
         imageGrid.innerHTML = images.slice(0, 10).map(renderCardHTML).join('');
     } catch (error) {
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
 }
 
-
 async function loadMore() {
     try {
         const images = await fetchTenImages();
         const newCardsHTML = images.slice(0, 10).map(renderCardHTML).join('');
         imageGrid.insertAdjacentHTML('beforeend', newCardsHTML);
-    }catch(error){
+    } catch(error) {
         imageGrid.textContent = `Error loading more images: ${error.message}`;
     }
 }
@@ -82,10 +81,10 @@ async function fetchTenImages() {
         apiUrl.searchParams.set('q', currentQuery);
         apiUrl.searchParams.set('page', currentPage);
 
-        // 2. Increment the page number for the next request 
+        // Increment the page number for the next request
         currentPage++;
 
-        // 3. Fetch data from PHP
+        // Fetch data from PHP
         const response = await fetch(apiUrl);
         const data = await response.json();
 
@@ -93,12 +92,12 @@ async function fetchTenImages() {
             throw new Error(data.error || 'Request failed');
         }
 
-        // 4. If Unsplash has no more images at all, break the loop 
+        // If Unsplash has no more images at all, break the loop
         if (data.hits.length === 0) {
             break;
         }
 
-        // 5. Add the images (which PHP has already filtered) to our list 
+        // Add the images (which PHP has already filtered) to our list
         collectedImages.push(...data.hits);
     }
 
@@ -119,10 +118,9 @@ input.addEventListener('input', () => {
 });
 
 document.addEventListener('keydown', (event) => {
-  // Kontrollera om tangenten som tryckts ner är 'r' eller 'R'
+    // Check if the pressed key is 'r' or 'R'
     if (event.key === 'r' || event.key === 'R') {
-        console.log('Du tryckte på tangenten r!');
+        console.log('You pressed the key r!');
         loadMore();
-        // Skriv din kod här som ska händer när man trycker på r
     }
 });
