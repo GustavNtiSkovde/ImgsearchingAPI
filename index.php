@@ -16,7 +16,6 @@
   <header class="top-bar">
     <div class="search-row">
       
-      <!-- NEW: SVG Logo Link -->
       <a href="#" class="logo-link" aria-label="Home">
         <img src="js/icon.svg" alt="ImgSearchingAPI Logo" class="site-logo" />
       </a>
