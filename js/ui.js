@@ -151,13 +151,14 @@ if (filterContainer && filterTrigger) {
     });
   });
 
-  // utomatically close dropdown if clicking outside the container 
+  // automatically close dropdown if clicking outside the container 
   document.addEventListener('click', (e) => {
     if (!filterContainer.contains(e.target)) {
       filterContainer.classList.remove('is-open');
-    }z
+    }
   });
 }
+
 // dark mode
 const themeToggleBtn = document.getElementById('themeToggle');
 
@@ -179,24 +180,29 @@ if (themeToggleBtn) {
     }
   });
 }
-// dark mode
-const themeToggleBtn = document.getElementById('themeToggle');
 
-if (themeToggleBtn) {
-  //check if user has used dark before and apply it on page load
-  const currentTheme = localStorage.getItem('theme');
-  if (currentTheme === 'dark') {
-    document.body.classList.add('dark-theme');
-  }
+//load more button
+const loadMoreBtn = document.getElementById("loadMoreBtn");
 
-  //swap themes on click and save choice to local storage
-  themeToggleBtn.addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme');
+if (loadMoreBtn) {
+  loadMoreBtn.addEventListener("click", () => {
+    const originalText = loadMoreBtn.innerText;
     
-    if (document.body.classList.contains('dark-theme')) {
-      localStorage.setItem('theme', 'dark');
-    } else {
-      localStorage.setItem('theme', 'light');
-    }
+    //loading state
+    loadMoreBtn.innerText = "Loading...";
+    loadMoreBtn.disabled = true;
+    loadMoreBtn.style.opacity = "0.7";
+    loadMoreBtn.style.cursor = "wait";
+
+    //simulate request to API (replace this with actual fetch logic)
+    setTimeout(() => {
+      console.log("Ready to fetch more images from API!");
+      
+      // Reset button state after load completes
+      loadMoreBtn.innerText = originalText;
+      loadMoreBtn.disabled = false;
+      loadMoreBtn.style.opacity = "1";
+      loadMoreBtn.style.cursor = "pointer";
+    }, 1000);
   });
 }
