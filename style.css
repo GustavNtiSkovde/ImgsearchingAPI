@@ -26,6 +26,7 @@ body {
   padding: 16px 24px;
   display: flex;
   flex-direction: column;
+  stroke:black;
   gap: 16px;
   background-color: var(--bg-app);
   color: var(--text-primary);
@@ -499,4 +500,30 @@ body {
   }
   
   #map { border-radius: var(--radius-sm); }
+}
+
+/* Behållaren som centrerar allt */
+.no-results-container {
+    display: flex;
+    flex-direction: column; /* Stapla ikonen och texten vertikalt */
+    align-items: center;    /* Centrera horisontellt */
+    justify-content: center; /* Centrera vertikalt i behållaren */
+    grid-column: 1 / -1;    /* Låt behållaren spänna över alla kolumner i galleriet */
+    padding: 100px 20px;     /* Mycket utrymme runt om */
+    text-align: center;
+}
+
+/* Den stora sökikonen */
+.no-results-icon {
+    width: 150px;           /* Storlek på ikonen */
+    height: 150px;
+    color: #121212;        /* En neutral grå färg */
+    margin-bottom: 20px;    /* Utrymme ner till texten */
+}
+
+/* Texten under ikonen */
+.no-results-text {
+    font-size: 20px;
+    color: #060606;
+    font-weight: 500;
 }

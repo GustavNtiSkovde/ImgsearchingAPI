@@ -24,21 +24,45 @@ function renderCardHTML(image) {
 }
 
 async function performSearch() {
-    // Gets the user's search term and encodes it safely for use in the URL parameter.
+    // Dörrvakt: Om knappen redan är avstängd, stoppar vi direkt!
+    if (button.disabled) return;
+
+    // Lås knappen direkt när en ny sökning startar
+    button.disabled = true;
+
+    // Starta timern som låser upp knappen igen efter 2 sekunder
+    setTimeout(() => {
+        button.disabled = false;
+    }, 5000);
+
+    // 4. Hämta och koda sökordet
     const search = encodeURIComponent(input.value.trim() || null);
     currentQuery = search;
-    currentPage = 1; // Reset page number for a new search
-    try {
+    currentPage = 1;
 
-        // Fetches at least 10 image objects via our helper function 
+    try {
         const images = await fetchTenImages();
-        // Renders each found image as a card in the grid.
-        imageGrid.innerHTML = images.slice(0,10).map(renderCardHTML).join('');
+        
+        // Hantera 0 resultat 🎨
+        if (images.length === 0) {
+            imageGrid.innerHTML = `
+                <div class="no-results-container">
+                    <svg class="no-results-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                    <p class="no-results-text">No images found for "${currentQuery}".</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Rita ut bilderna i galleriet 🖼️
+        imageGrid.innerHTML = images.slice(0, 10).map(renderCardHTML).join('');
     } catch (error) {
-        // Displays a clear error message if the search fails.
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
 }
+
 
 async function loadMore() {
     try {
