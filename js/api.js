@@ -7,6 +7,10 @@ let currentPage = 1;
 let currentQuery = '';
 let randomMode = false;
 
+if (loadMoreBtn) {
+    loadMoreBtn.style.display = 'none';
+}
+
 function renderCardHTML(image) {
     return `
         <div class="card-item" data-image-id="${image.ID}">
@@ -34,6 +38,10 @@ async function performSearch() {
 
     // Disable the button immediately when a new search starts
     button.disabled = true;
+
+    if (loadMoreBtn) {
+    loadMoreBtn.style.display = 'none';
+    }  
 
     // Start a timer to re-enable the button after 5 seconds
     setTimeout(() => {
@@ -63,6 +71,8 @@ async function performSearch() {
 
         // Render each found image as a card in the grid
         imageGrid.innerHTML = images.slice(0, 10).map(renderCardHTML).join('');
+        //Visa "Load More"-knappen eftersom vi har resultat!
+        if (loadMoreBtn) loadMoreBtn.style.display = 'block';
     } catch (error) {
         imageGrid.textContent = `Error loading images: ${error.message}`;
     }
@@ -146,28 +156,24 @@ input.addEventListener('input', () => {
 
 // Attach event listener for loading more images if the button exists in the DOM
 if (loadMoreBtn) {
-    loadMoreBtn.addEventListener("click", () => {
+    loadMoreBtn.addEventListener("click", async () => {
         const originalText = loadMoreBtn.innerText;
         
-        // Apply visual loading state and disable the button to prevent duplicate clicks
+        // Ändra knappens utseende under laddning
         loadMoreBtn.innerText = "Loading...";
         loadMoreBtn.disabled = true;
         loadMoreBtn.style.opacity = "0.7";
         loadMoreBtn.style.cursor = "wait";
 
-        // Delay the execution to simulate an API request and reset button state afterwards
-        setTimeout(() => {
-            loadMore();
-            console.log("Ready to fetch more images from API!");
-            
-            // Reset button state after loading completes
+        try {
+            // Hämta fler bilder
+            await loadMore();
+        } finally {
+            // Återställ knappen när laddningen är klar
             loadMoreBtn.innerText = originalText;
             loadMoreBtn.disabled = false;
             loadMoreBtn.style.opacity = "1";
             loadMoreBtn.style.cursor = "pointer";
-        }, 1000);
-
-        // Note: This line executes immediately after setting the timeout
-        loadMoreBtn.innerText = "Load More Images";
+        }
     });
 };
