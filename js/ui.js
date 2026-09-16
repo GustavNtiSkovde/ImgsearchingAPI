@@ -107,33 +107,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-
-//quick search
-const suggestionChips = document.querySelectorAll(".suggestion-chip");
-const searchInput = document.getElementById("searchInput");
-const searchForm = document.getElementById("searchForm");
-
-suggestionChips.forEach(chip => {
-  chip.addEventListener("click", () => {
-    const tag = chip.getAttribute("data-tag");
-    
-    if (searchInput && searchForm) {
-      //save what user has typed
-      const currentVal = searchInput.value;
-      
-      //sproof input
-      searchInput.value = tag;
-      
-      //trigger search
-      searchForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
-      
-      //revert search input to what user had typed
-      searchInput.value = currentVal;
-    }
-  });
-});
-
-
 // dark mode
 const themeToggleBtn = document.getElementById('themeToggle');
 

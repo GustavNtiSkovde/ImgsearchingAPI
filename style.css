@@ -279,10 +279,11 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--grid-min-size, 240px), 1fr));
   gap: 20px;
-  
+  min-height: 0;
   padding: 20px;
   flex: 1;
-  overflow-y: auto; 
+  overflow-y: auto;
+  align-content: start;
 }
 
 .load-more-wrapper {
@@ -369,7 +370,10 @@ body.is-resizing .split-divider::after {
   background-color: #e5e5e5; 
 }
 
-.card-item { position: relative; }
+.card-item {
+  position: relative;
+  min-width: 0;
+}
 
 .picture-box {
   height: var(--grid-min-size, 200px); 
