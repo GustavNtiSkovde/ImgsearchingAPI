@@ -66,6 +66,10 @@ $lng = filter_input(INPUT_GET, 'lng', FILTER_VALIDATE_FLOAT);
 
 //If the coords is right call function to get the city and country
 if ($lat !== false && $lng !== false && $lat !== null && $lng !== null) {
-    $result = getLocationFromCoordinates($lat, $lng);
-    echo json_encode($result);
+    $georesult = getLocationFromCoordinates($lat, $lng);
+    echo json_encode($georesult);
+    exit;
 }
+
+http_response_code(400);
+echo json_encode(['error' => 'Invalid latitude or longitude']);

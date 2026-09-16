@@ -12,6 +12,52 @@ document.addEventListener('DOMContentLoaded', function () { //Added listner for 
     //Variable for map pin icon
     let currentMarker = null;
 
+    // Cards are rendered dynamically, so handle all image clicks from the document.
+    document.addEventListener('click', async function(event) {
+        const card = event.target.closest('.card-item');
+
+        const imageId = card.dataset.imageId;
+
+        try {
+            // Fetch coordinates and statistics for this image only after it is clicked.
+            const detailUrl = `./api.php?id=${encodeURIComponent(imageId)}`;
+            const statsUrl = `${detailUrl}&stats=1`;
+            const [detailResponse, statsResponse] = await Promise.all([
+                fetch(detailUrl),
+                fetch(statsUrl)
+            ]);
+            const data = await detailResponse.json();
+            const statsData = await statsResponse.json();
+
+            if (!detailResponse.ok || data.error || !data.hits?.[0]) {
+                throw new Error(data.error || 'Could not find image details');
+            }
+
+            if (!statsResponse.ok) {
+                throw new Error(statsData.error);
+            }
+
+            const image = data.hits[0];
+            // Images without location data cannot be placed on the map.
+            if (!Number.isFinite(Number(image.latitude)) || !Number.isFinite(Number(image.longitude))) {
+                console.warn('This image has no coordinates');
+                return;
+            }
+
+            const imageCoords = [Number(image.latitude), Number(image.longitude)];
+            if (currentMarker) currentMarker.remove();
+
+            currentMarker = L.marker(imageCoords)
+                .addTo(map)
+                .bindPopup(`<b>${image.location}</b><br>Coordinates: ${image.longitude} ${image.latitude}`)
+                .openPopup();
+
+            map.setView(imageCoords, 13);
+        } catch (error) {
+            console.error('Error fetching image location', error);
+        }
+    });
+
     map.on('click', async function(e) {
         let coords = e.latlng; 
         console.log(coords);
@@ -24,11 +70,24 @@ document.addEventListener('DOMContentLoaded', function () { //Added listner for 
         try {
             let response = await fetch(`../nominatimapi.php?lat=${coords.lat}&lng=${coords.lng}`);
             let data = await response.json();
-            console.log("Location details:", data.country, data.city);
+
+            //Error handling if no location given
+            if (!response.ok || data.error) {
+                throw new Error(data.error || 'Could not find this location');
+            }
             
             //Show city and country on the marker
             if (data.city ?? data.country) {
                 currentMarker.bindPopup(`<b>${data.city}</b>, ${data.country}`).openPopup();
+            }
+
+            // If data has anything add it into the query to be used in api.js
+            if (data.search_query) {
+                const searchInput = document.getElementById('searchInput');
+                const searchForm = document.getElementById('searchForm');
+
+                searchInput.value = data.search_query;
+                searchForm.requestSubmit(); //RequestSubmit to simulate a submit button to trigger search
             }
         }
         catch (error) {

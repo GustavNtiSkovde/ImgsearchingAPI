@@ -7,7 +7,7 @@ let currentQuery = '';
 
 function renderCardHTML(image) {
     return `
-        <div class="card-item">
+        <div class="card-item" data-image-id="${image.ID}">
             <div class="picture-box">
                 <img class="picture-box-img" src="${image.webformatURL}" alt="${image.tags}">
             </div>
@@ -24,6 +24,7 @@ function renderCardHTML(image) {
 }
 
 async function performSearch() {
+
     // Guard clause: Stop execution immediately if the button is disabled
     if (button.disabled) return;
 
@@ -41,6 +42,7 @@ async function performSearch() {
     currentPage = 1;
 
     try {
+        // Fetches at least 10 image objects via our helper function 
         const images = await fetchTenImages();
         
         // Handle zero results
@@ -103,6 +105,8 @@ async function fetchTenImages() {
 
     return collectedImages;
 }
+
+
 
 button.addEventListener('click', async () => {
     performSearch();
